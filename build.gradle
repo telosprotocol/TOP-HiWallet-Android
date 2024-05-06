@@ -1,0 +1,84 @@
+//apply plugin: 'com.android.library'
+//apply plugin: 'org.greenrobot.greendao' // apply plugin
+//
+//apply plugin: 'kotlin-android'
+//apply plugin: 'kotlin-android-extensions'
+
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'org.greenrobot.greendao'
+    id 'kotlin-android-extensions'
+}
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
+
+}
+greendao {
+    //9
+    schemaVersion 9
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+
+    api (rootProject.ext.dependencies["bitcoinj"]){
+        exclude group: 'com.google.protobuf',module: 'protobuf-java'
+        exclude group: 'com.google.protobuf',module: 'protobuf-lite'
+        exclude group: 'com.google.protobuf',module: 'protobuf-javalite'
+    }
+    api (rootProject.ext.dependencies["web3j"]){
+        exclude group: 'com.google.protobuf',module: 'protobuf-java'
+        exclude group: 'com.google.protobuf',module: 'protobuf-lite'
+        exclude group: 'com.google.protobuf',module: 'protobuf-javalite'
+    }
+    api rootProject.ext.dependencies["greendao"]
+    api rootProject.ext.dependencies["sqlcipher"]
+    api rootProject.ext.dependencies["GreenDaoUpgradeHelper"]
+    api rootProject.ext.dependencies["jackson"]
+    api 'com.lgann.develop:mnemonic-sdk:1.0.0'
+    api (rootProject.ext.dependencies["wallet-core"]){
+        exclude group: 'com.google.protobuf',module: 'protobuf-java'
+        exclude group: 'com.google.protobuf',module: 'protobuf-lite'
+        exclude group: 'com.google.protobuf',module: 'protobuf-javalite'
+    }
+    api 'com.google.protobuf:protobuf-java:3.9.2'
+    api 'at.favre.lib:hkdf:1.1.0'
+    api project(':b_a_topj')
+
+//    api rootProject.ext.dependencies["guava"]
+
+}
